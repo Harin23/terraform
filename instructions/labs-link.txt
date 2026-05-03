@@ -1,0 +1,1 @@
+https://github.com/btkrausen/terraform-associate-labs/blob/main/labs/lab_07_simplify_code_with_local_values/AWS/aws.md
