@@ -1,0 +1,31 @@
+terraform $ export TF_VAR_environment="abc"
+terraform $ terraform plan
+aws_vpc.main: Refreshing state... [id=vpc-44dd7b9cb84615bee]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_vpc.main will be updated in-place
+  ~ resource "aws_vpc" "main" {
+        id                                   = "vpc-44dd7b9cb84615bee"
+      ~ tags                                 = {
+          ~ "Environment" = "development" -> "abc"
+            "Name"        = "terraform-course"
+        }
+      ~ tags_all                             = {
+          ~ "Environment" = "development" -> "abc"
+            # (3 unchanged elements hidden)
+        }
+        # (18 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run
+"terraform apply" now.
+terraform $ 

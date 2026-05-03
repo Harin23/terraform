@@ -16,6 +16,13 @@ provider "aws" {
   skip_metadata_api_check     = var.is_local
   skip_requesting_account_id  = var.is_local
 
+  default_tags {
+    tags = {
+      Managed_By = "Terraform"
+      Project    = "Terraform Training"
+    }
+  }
+
   endpoints {
     s3             = var.aws_endpoint
     dynamodb       = var.aws_endpoint
