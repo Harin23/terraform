@@ -1,0 +1,28 @@
+https://ministack.org/docs/iac
+
+`docker run --rm -p 4566:4566 ministackorg/ministack`
+
+
+----
+aws cli:
+
+set temp env vars:
+```
+export AWS_ACCESS_KEY_ID="test"
+export AWS_SECRET_ACCESS_KEY="test"
+export AWS_DEFAULT_REGION="us-east-1"
+```
+
+could also create a profile:
+```
+run:~/github-repos/terraform$ aws configure --profile local
+
+inputs for example:
+
+AWS Access Key ID [None]: test
+AWS Secret Access Key [None]: test
+Default region name [None]: us-east-1
+Default output format [None]: json
+```
+
+and use `--endpoint-url=http://localhost:4566` flag

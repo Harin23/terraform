@@ -1,0 +1,37 @@
+~/github-repos/terraform$ aws ec2 describe-vpcs --filters "Name=tag:Name,Values=terraform-course" --region=us-east-1 --endpoint-url=http://localhost:4566
+{
+    "Vpcs": [
+        {
+            "OwnerId": "000000000000",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-4344cf49e72267625",
+                    "CidrBlock": "10.0.0.0/16",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "terraform-course"
+                },
+                {
+                    "Key": "Managed_By",
+                    "Value": "Terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "Lab"
+                }
+            ],
+            "VpcId": "vpc-4344cf49e72267625",
+            "State": "available",
+            "CidrBlock": "10.0.0.0/16",
+            "DhcpOptionsId": "dopt-00000001"
+        }
+    ]
+}
