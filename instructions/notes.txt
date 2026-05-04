@@ -26,3 +26,15 @@ Default output format [None]: json
 ```
 
 and use `--endpoint-url=http://localhost:4566` flag
+
+~/.bashrc setting:
+
+```
+# awslocal: aws CLI with local endpoint and local profile
+awslocal() {
+  # preserve original quoting/word-splitting for passed args
+  local args=("$@")
+  aws --endpoint-url=http://localhost:4566 --profile local "${args[@]}"
+}
+export -f awslocal
+```
