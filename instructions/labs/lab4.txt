@@ -1,3 +1,5 @@
+check resources are generated using cli:
+
 awslocal ec2 describe-vpcs --region us-east-1 --output json | jq .
 
 awslocal ec2 describe-subnets --filters "Name=vpc-00000001" --region us-east-1 | jq .
