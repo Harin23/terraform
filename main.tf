@@ -1,63 +1,109 @@
+data "aws_region" "current" {}
+
+locals {
+  tags = {
+    Environment = var.environment
+    Project     = "terraform-demo"
+    Owner       = "infrastructure-team"
+    CostCenter  = "cc-1234"
+    Region      = data.aws_region.current.name
+    ManagedBy   = "terraform"
+  }
+  
+  name_prefix = "${var.environment}-"
+}
+
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = {
-    Name        = "terraform-course"
-    Environment = var.environment
+ tags = {
+    Name        = "${local.name_prefix}vpc-${data.aws_region.current.name}"  # <-- update value here
+    Environment = local.tags.Environment  # <-- update value here
+    Project     = local.tags.Project  # <-- update value here
+    Owner       = local.tags.Owner  # <-- update value here
+    CostCenter  = local.tags.CostCenter  # <-- update value here
+    Region      = local.tags.Region  # <-- update value here
+    ManagedBy   = local.tags.ManagedBy  # <-- update value here
   }
 }
 
-# Create Subnets
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr
-  availability_zone       = var.availability_zone
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = true
+
+tags = {
+    Name        = "${local.name_prefix}public-subnet-us-east-1a"  # <-- update value here
+    Environment = local.tags.Environment  # <-- update value here
+    Project     = local.tags.Project  # <-- update value here
+    Owner       = local.tags.Owner  # <-- update value here
+    CostCenter  = local.tags.CostCenter  # <-- update value here
+    Region      = local.tags.Region  # <-- update value here
+    ManagedBy   = local.tags.ManagedBy  # <-- update value here
+    Tier        = "public"
+  }
+}
+
+resource "aws_subnet" "public_b" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-1b"
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "public-subnet"
-    Environment = var.environment
+    Name        = "${local.name_prefix}public-subnet-us-east-1b"
+    Environment = local.tags.Environment
+    Project     = local.tags.Project
+    Owner       = local.tags.Owner
+    CostCenter  = local.tags.CostCenter
+    Region      = local.tags.Region
+    ManagedBy   = local.tags.ManagedBy
+    Tier        = "public"
   }
 }
 
-resource "aws_subnet" "private" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.private_subnet_cidr
-  availability_zone = var.availability_zone
+resource "aws_subnet" "private_a" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = false
+
+tags = {
+    Name        = "${local.name_prefix}private-subnet-us-east-1a"  # <-- update value here
+    Environment = local.tags.Environment  # <-- update value here
+    Project     = local.tags.Project  # <-- update value here
+    Owner       = local.tags.Owner  # <-- update value here
+    CostCenter  = local.tags.CostCenter  # <-- update value here
+    Region      = local.tags.Region  # <-- update value here
+    ManagedBy   = local.tags.ManagedBy  # <-- update value here
+    Tier        = "private"
+  }
+}
+
+resource "aws_subnet" "private_b" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.4.0/24"
+  availability_zone       = "us-east-1b"
+  map_public_ip_on_launch = false
 
   tags = {
-    Name        = "private-subnet"
-    Environment = var.environment
+    Name        = "${local.name_prefix}private-subnet-us-east-1b"  # <-- update value here
+    Environment = local.tags.Environment  # <-- update value here
+    Project     = local.tags.Project  # <-- update value here
+    Owner       = local.tags.Owner  # <-- update value here
+    CostCenter  = local.tags.CostCenter  # <-- update value here
+    Region      = local.tags.Region  # <-- update value here
+    ManagedBy   = local.tags.ManagedBy  # <-- update value here
+    Tier        = "private"
   }
 }
 
-# Main Route Table
-resource "aws_route_table" "main" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name        = "main-route-table"
-    Environment = var.environment
-  }
-}
-
-# Route Table Associations
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.main.id
-}
-
-resource "aws_route_table_association" "private" {
-  subnet_id      = aws_subnet.private.id
-  route_table_id = aws_route_table.main.id
-}
-
-# Example Security Group
-resource "aws_security_group" "example" {
-  name        = "example-security-group"
-  description = "Example security group for our VPC"
+resource "aws_security_group" "web" {
+  name        = "${local.name_prefix}web-sg"
+  description = "Allow web traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -81,8 +127,13 @@ resource "aws_security_group" "example" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name        = "example-security-group"
-    Environment = var.environment
+ tags = {
+    Name        = "${local.name_prefix}web-sg"  # <-- update value here
+    Environment = local.tags.Environment  # <-- update value here
+    Project     = local.tags.Project  # <-- update value here
+    Owner       = local.tags.Owner  # <-- update value here
+    CostCenter  = local.tags.CostCenter  # <-- update value here
+    Region      = local.tags.Region  # <-- update value here
+    ManagedBy   = local.tags.ManagedBy  # <-- update value here
   }
 }
